@@ -13,19 +13,9 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()
 
-
-        if self.settings.fullscreen:
-            # fullscreen mode
-            self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-            self.settings.screen_width = self.screen.get_rect().width
-            self.settings.screen_height = self.screen.get_rect().height
-            pygame.display.set_caption("Alien Invasion")
-        else:
-            # window mode
-            self.screen = pygame.display.set_mode(
-                (self.settings.screen_width, self.settings.screen_height))
-
-
+        self.screen = pygame.display.set_mode(
+            (self.settings.screen_width, self.settings.screen_height))
+        pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
 
@@ -61,9 +51,6 @@ class AlienInvasion:
             self.ship.moving_down = True
         elif event.key == pygame.K_q:
             sys.exit()
-        #idea for toggle of fullscreen mode (like in Youtube)
-        #elif event.key == pygame.K_f:
-            #self.settings.fullscreen = not self.settings.fullscreen
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
