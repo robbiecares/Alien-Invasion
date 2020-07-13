@@ -6,6 +6,7 @@ from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from background import Background
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
@@ -19,10 +20,12 @@ class AlienInvasion:
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
 
-        # Set the background color
+        # Set the background
         self.bg_color = self.settings.bg_color
+        self.BackGround = Background('images/starfield.png', [0,0])
 
-        # Declare game objects
+
+        # Declare the game objects
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -117,7 +120,8 @@ class AlienInvasion:
 
     def _update_screen(self):
         """Redraw the screen during each pass through the loop"""
-        self.screen.fill(self.settings.bg_color)
+        self.screen.fill(self.bg_color)
+        self.screen.blit(self.BackGround.image, self.BackGround.rect)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
