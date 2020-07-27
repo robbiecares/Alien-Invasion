@@ -64,6 +64,10 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_p:
+            #ToDo: create a function to toggle the state of pause. An active pause should prevent all other buttons from working except Quit.
+            None
+
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -114,7 +118,7 @@ class AlienInvasion:
 
         # Determine the number of rows of aliens that fit on the screen.
         available_space_y = self.settings.screen_height - (2 * alien_height)
-        number_of_rows = available_space_y // (2 * alien_height)
+        number_of_rows = available_space_y // (2 * alien_height) + 1
 
         #set the starting position for fleet creation
         x_starting_position = ship_width + (3 * alien_width)
@@ -130,7 +134,8 @@ class AlienInvasion:
         alien_width, alien_height = alien.rect.size
         alien.x = x_starting_position + (alien_width + 2 * alien_width * alien_number)
         alien.rect.x = alien.x
-        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
+        alien.y = alien.rect.height + (2 * alien.rect.height * row_number)
+        alien.rect.y = alien.y
         self.aliens.add(alien)
 
     def _check_fleet_edges(self):
