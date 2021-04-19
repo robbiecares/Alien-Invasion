@@ -1,4 +1,6 @@
 import json
+from pathlib import Path
+
 
 class GameStats:
     """Track statistics for Alien Invasion."""
@@ -7,7 +9,8 @@ class GameStats:
         """Initialize statistics."""
         self.settings = ai_game.settings
         self.reset_stats()
-        self.starting_high_score = self.read_high_score()
+        self.score_file = Path('high_score.json')
+        self.starting_high_score = json.load(self.score_file.open()) if self.score_file.exists() else 0
         self.current_high_score = self.starting_high_score
 
         # Start Alien Invasion in an inactive state.
@@ -21,14 +24,8 @@ class GameStats:
         self.score = 0
         self.level = 1
 
-    def read_high_score(self):
-        with open('high_score.json') as f:
-            self.starting_high_score = json.load(f)
-        return int(self.starting_high_score)
-
     def write_high_score(self):
-        filename = "high_score.json"
-        with open(filename, "w") as f:
-            json.dump(f"{self.current_high_score}", f)
-
+        """Create a high score file and write the high score to it"""
+        self.score_file.touch()
+        json.dump(self.current_high_score, self.score_file.open(mode='w'))
 

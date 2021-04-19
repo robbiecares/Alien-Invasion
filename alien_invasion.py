@@ -1,7 +1,7 @@
 import sys
 from time import sleep
 
-import pygame
+import pygame as pygame
 
 from settings import Settings
 from ship import Ship
@@ -12,11 +12,12 @@ from game_stats import GameStats
 from button import Button
 from scoreboard import Scoreboard
 
+
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
 
     def __init__(self):
-        """Initialize the game and create game resources"""
+        """Initialize the game and create game resources."""
         pygame.init()
         self.settings = Settings()
 
@@ -33,7 +34,7 @@ class AlienInvasion:
         self.BackGround = Background('images/starfield.png', [0, 0])
 
         # Declare the game objects
-        #self.buttons = pygame.sprite.Group()
+        # self.buttons = pygame.sprite.Group()
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -61,7 +62,7 @@ class AlienInvasion:
             self._update_screen()
 
     def _check_events(self):
-        """Respond to keypresses and mouse events."""
+        """Respond to key presses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.sb.check_endgame_highscore()
@@ -147,7 +148,7 @@ class AlienInvasion:
         # TODO: create func/dict of the diff buttons & loop over them whenever a button is clicked. The selected button
         #  is highlighted & all other button become the default color
 
-        #self.difficulty_buttons = {"Easy": self.easy_button, "Medium": self.medium_button, "Hard": self.hard_button}
+        # self.difficulty_buttons = {"Easy": self.easy_button, "Medium": self.medium_button, "Hard": self.hard_button}
 
         if self.easy_button.rect.collidepoint(mouse_pos):
             self.settings.starting_settings = self.settings.Easy
@@ -188,21 +189,21 @@ class AlienInvasion:
 
         # Hide the cursor
         pygame.mouse.set_visible(False)
-        pygame.mouse.set_pos(0,0)
+        pygame.mouse.set_pos(0, 0)
 
     def _update_screen(self):
         """Redraw the screen during each pass through the loop"""
 
-        #draw game background
+        # draw game background
         self.screen.fill(self.bg_color)
         self.screen.blit(self.BackGround.image, self.BackGround.rect)
 
         # Draw the main menu buttons if the game is not active
         if not self.stats.game_active and not self.stats.settings_menu:
             self.play_button.draw_button("Play")
-            self.play_button.rect.centery = (self.settings.screen_height / 2) - (self.play_button.height)
+            self.play_button.rect.centery = (self.settings.screen_height / 2) - self.play_button.height
             self.settings_button.draw_button("Settings")
-            self.settings_button.rect.centery = (self.settings.screen_height / 2) + (self.settings_button.height)
+            self.settings_button.rect.centery = (self.settings.screen_height / 2) + self.settings_button.height
 
         # Draw the settings menu
         if self.stats.settings_menu:
@@ -213,9 +214,9 @@ class AlienInvasion:
             self.hard_button.draw_button("Hard")
             self.hard_button.rect.centery = (self.settings.screen_height / 2) + (2 * self.easy_button.height)
             self.back_button.draw_button("Back")
-            self.back_button.rect.bottom = (self.settings.screen_height) - (self.easy_button.height)
+            self.back_button.rect.bottom = self.settings.screen_height - self.easy_button.height
 
-        #draw active game objects
+        # draw active game objects
         if self.stats.game_active:
             self.ship.blitme()
             for bullet in self.bullets.sprites():
@@ -265,11 +266,10 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
-            #increase level
+            # increase level
             self.settings.increase_speed()
             self.stats.level += 1
             self.sb.prep_level()
-
 
     def _create_fleet(self):
         """"Create the fleet of aliens."""
@@ -302,20 +302,20 @@ class AlienInvasion:
         self.aliens.add(alien)
 
     def _check_fleet_edges(self):
-        """Respond appropriately if any aliens have reached an edge"""
+        """Respond appropriately if any aliens have reached an edge."""
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
 
     def _change_fleet_direction(self):
-        """Drop the entire fleet and change the fleet's direction"""
+        """Drop the entire fleet and change the fleet's direction."""
         for alien in self.aliens.sprites():
             alien.rect.x -= self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
     def _update_aliens(self):
-        """Check if the fleet is at an edge, then update the positions of all aliens in the fleet"""
+        """Check if the fleet is at an edge, then update the positions of all aliens in the fleet."""
         self._check_fleet_edges()
         self.aliens.update()
 
@@ -361,6 +361,7 @@ class AlienInvasion:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
             self.sb.check_endgame_highscore()
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
